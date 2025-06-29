@@ -7,7 +7,7 @@ import SignUpPage from './pages/SignUpPage';
 import Dashboard from './pages/Dashboard';
 import MentorProfile from './pages/MentorProfile';
 import MenteeProfile from './pages/MenteeProfile';
-import './App.css'; // Import the stylesheet
+
 
 function App() {
   return (
