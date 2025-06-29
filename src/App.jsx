@@ -1,28 +1,63 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.jsx
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
-import Dashboard from './pages/Dashboard';
-import MentorProfile from './pages/MentorProfile';
-import MenteeProfile from './pages/MenteeProfile';
-
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import MentorDashboard from './pages/MentorDashboard';
+import MenteeDashboard from './pages/MenteeDashboard';
+import CommunityHub from './pages/CommunityHub';
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [message, setMessage] = useState({ text: '', type: '' });
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (user) setCurrentUser(user);
+  }, []);
+
+  const handleLogin = (user) => {
+    setCurrentUser(user);
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    setMessage({ text: 'Login successful!', type: 'success' });
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('currentUser');
+    setMessage({ text: 'Logged out successfully', type: 'success' });
+  };
+
+  const handleSignup = (newUser) => {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    setMessage({ text: 'Account created successfully!', type: 'success' });
+  };
+
   return (
     <Router>
-      <Header />
-      <main>
+      <div className="min-h-screen bg-gray-50">
+        <Header currentUser={currentUser} onLogout={handleLogout} />
+        {message.text && (
+          <div className={`fixed top-4 right-4 p-4 rounded-md ${
+            message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+          }`}>
+            {message.text}
+          </div>
+        )}
+        
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/mentor-profile" element={<MentorProfile />} />
-          <Route path="/mentee-profile" element={<MenteeProfile />} />
+          <Route path="/" element={<Home currentUser={currentUser} />} />
+          <Route path="/login" element={currentUser ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />
+          <Route path="/signup" element={currentUser ? <Navigate to="/" /> : <Signup onSignup={handleSignup} />} />
+          <Route path="/mentor-dashboard" element={currentUser?.role === 'mentor' ? <MentorDashboard user={currentUser} /> : <Navigate to="/" />} />
+          <Route path="/mentee-dashboard" element={currentUser?.role === 'mentee' ? <MenteeDashboard user={currentUser} /> : <Navigate to="/" />} />
+          <Route path="/community" element={<CommunityHub />} />
         </Routes>
-      </main>
+      </div>
     </Router>
   );
 }
