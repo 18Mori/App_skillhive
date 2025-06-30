@@ -1,4 +1,3 @@
-// src/pages/MenteeDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getSessions } from '../services/storageService';

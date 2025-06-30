@@ -23,7 +23,7 @@ const MentorDashboard = () => {
 
   const handleUpdateSession = (sessionId, status) => {
     if (updateSessionStatus(sessionId, status)) {
-      fetchSessions(); // Re-fetch sessions to update the UI
+      fetchSessions(); 
     }
   };
 

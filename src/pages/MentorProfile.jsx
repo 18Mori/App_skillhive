@@ -1,4 +1,3 @@
-// src/pages/MentorProfile.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getUsers } from '../services/storageService'; // We'll use getUsers for simplicity
@@ -8,8 +7,6 @@ const MentorProfile = () => {
   const [mentor, setMentor] = useState(null);
 
   useEffect(() => {
-    // In a real app, you might have a getUserById function.
-    // For now, we can find the user from the full list.
     const mentorData = getUsers().find(user => user.id === mentorId);
     setMentor(mentorData);
   }, [mentorId]);

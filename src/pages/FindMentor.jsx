@@ -1,4 +1,3 @@
-// src/pages/FindMentor.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getUsers } from '../services/storageService';
@@ -16,7 +15,6 @@ const FindMentor = () => {
     setAllMentors(mentors);
     setFilteredMentors(mentors);
 
-    // Extract unique skills for the filter dropdown
     const skillsSet = new Set();
     mentors.forEach(mentor => {
       if (mentor.skills) {
@@ -33,14 +31,12 @@ const FindMentor = () => {
   useEffect(() => {
     let results = allMentors;
 
-    // Filter by selected skill first
     if (selectedSkill) {
       results = results.filter(mentor =>
         mentor.skills?.toLowerCase().includes(selectedSkill.toLowerCase())
       );
     }
 
-    // Then filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       results = results.filter(mentor =>

@@ -1,4 +1,3 @@
-// src/components/SessionCard.jsx
 import React from 'react';
 import moment from 'moment';
 import { getUsers } from '../services/storageService';

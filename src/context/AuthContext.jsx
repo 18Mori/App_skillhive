@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import * as storage from '../services/storageService';
 
@@ -8,12 +7,11 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(storage.getCurrentUser());
   const [message, setMessage] = useState({ text: '', type: '' });
 
-  // Effect to clear message after a delay
   useEffect(() => {
     if (message.text) {
       const timer = setTimeout(() => {
         setMessage({ text: '', type: '' });
-      }, 3000); // Hide after 3 seconds
+      }, 3000); 
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -26,17 +24,16 @@ export const AuthProvider = ({ children }) => {
       storage.setCurrentUser(user);
       setCurrentUser(user);
       setMessage({ text: 'Login successful!', type: 'success' });
-      return user; // Return user object on success
+      return user; 
     } else {
       setMessage({ text: 'Invalid email or password.', type: 'error' });
-      return null; // Indicate failure
+      return null; 
     }
   };
 
   const logout = () => {
     storage.removeCurrentUser();
     setCurrentUser(null);
-    // No message on logout to avoid clutter on redirect
   };
 
   const signup = (newUser) => {
@@ -56,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
     const updatedUser = storage.updateUser(currentUser.id, updatedData);
     if (updatedUser) {
-      setCurrentUser(updatedUser); // Update context state
+      setCurrentUser(updatedUser); 
       setMessage({ text: 'Profile updated successfully!', type: 'success' });
       return updatedUser;
     } else {

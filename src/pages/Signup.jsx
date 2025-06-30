@@ -1,4 +1,3 @@
-// src/pages/Signup.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +21,7 @@ const Signup = () => {
       joinedDate: new Date().toISOString(),
     };
     if (signup(newUser)) {
-      navigate('/login'); // Redirect to login page after successful signup
+      navigate('/login'); 
     }
   };
 

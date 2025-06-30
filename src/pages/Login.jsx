@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +13,7 @@ const Login = () => {
     const user = login(email, password);
     if (user) {
       const path = user.role === 'mentor' ? '/mentor-dashboard' : '/mentee-dashboard';
-      navigate(path); // Redirect to the appropriate dashboard
+      navigate(path); 
     }
   };
 

@@ -1,4 +1,3 @@
-// src/pages/EditProfile.jsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -27,8 +26,8 @@ const EditProfile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setAvatar(reader.result); // Store Base64 string for submission
-        setAvatarPreview(reader.result); // Update preview
+        setAvatar(reader.result); 
+        setAvatarPreview(reader.result); 
       };
       reader.readAsDataURL(file);
     }
@@ -36,7 +35,6 @@ const EditProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Only include avatar if a new one was selected
     const updatedData = { name, skills, bio, ...(avatar && { avatar }) };
     if (updateUserProfile(updatedData)) {
       navigate('/mentor-dashboard');

@@ -1,4 +1,3 @@
-// src/pages/RequestSession.jsx
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -15,7 +14,6 @@ const RequestSession = () => {
   const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState({});
 
-  // Get today's date in YYYY-MM-DD format for the min attribute
   const today = new Date().toISOString().split('T')[0];
 
   const validateForm = () => {
@@ -29,7 +27,6 @@ const RequestSession = () => {
     if (!time) newErrors.time = 'Please select a time.';
 
     setErrors(newErrors);
-    // Return true if form is valid, false otherwise
     return Object.keys(newErrors).length === 0;
   };
 
@@ -44,14 +41,13 @@ const RequestSession = () => {
       topic,
       date,
       time,
-      duration: 60, // Default duration
+      duration: 60, 
       status: 'pending',
       notes,
     };
 
     addSession(newSession);
-    // Optionally, show a success message via AuthContext before navigating
-    navigate('/mentee-dashboard'); // Redirect to dashboard to see the pending request
+    navigate('/mentee-dashboard'); 
   };
 
   return (
