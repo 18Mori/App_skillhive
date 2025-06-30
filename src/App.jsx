@@ -14,8 +14,16 @@ function App() {
   const [message, setMessage] = useState({ text: '', type: '' });
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (user) setCurrentUser(user);
+    try {
+      const userJSON = localStorage.getItem('currentUser');
+      if (userJSON) {
+        setCurrentUser(JSON.parse(userJSON));
+      }
+    } catch (error) {
+      console.error("Failed to parse currentUser from localStorage", error);
+      localStorage.removeItem('currentUser'); // Clear corrupted data
+    }
+
   }, []);
 
   const handleLogin = (user) => {
@@ -31,10 +39,16 @@ function App() {
   };
 
   const handleSignup = (newUser) => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-    setMessage({ text: 'Account created successfully!', type: 'success' });
+    try {
+      const usersJSON = localStorage.getItem('users');
+      const users = usersJSON ? JSON.parse(usersJSON) : [];
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      setMessage({ text: 'Account created successfully!', type: 'success' });
+    } catch (error) {
+      console.error("Failed to update users in localStorage", error);
+      setMessage({ text: 'An error occurred during signup.', type: 'error' });
+    }
   };
 
   return (

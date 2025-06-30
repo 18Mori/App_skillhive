@@ -3,7 +3,15 @@ import React from 'react';
 import moment from 'moment';
 
 const SessionCard = ({ session, onUpdate, type }) => {
-  const users = JSON.parse(localStorage.getItem('users')) || [];
+  let users = [];
+  try {
+    const usersData = localStorage.getItem('users');
+    // Safely parse data, ensuring it defaults to an empty array if null/undefined
+    users = usersData ? JSON.parse(usersData) : [];
+  } catch (error) {
+    console.error("Failed to parse 'users' from localStorage:", error);
+    // In case of a parsing error, users will remain an empty array
+  }
   
   const getParticipant = (id) => 
     users.find(user => user.id === id) || {};
@@ -17,13 +25,15 @@ const SessionCard = ({ session, onUpdate, type }) => {
         <div>
           <h3 className="font-semibold">{session.topic}</h3>
           <p className="text-gray-600 text-sm">
-            {type === 'mentor' ? `With: ${mentee.name}` : `Mentor: ${mentor.name}`}
+            {type === 'mentor' ? `With: ${mentee.name || 'Mentee'}` : `Mentor: ${mentor.name || 'Expert'}`}
           </p>
         </div>
         <span className={`px-2 py-1 rounded-full text-xs ${
           session.status === 'confirmed' 
             ? 'bg-green-100 text-green-800' 
-            : 'bg-yellow-100 text-yellow-800'
+            : session.status === 'completed'
+              ? 'bg-blue-100 text-blue-800'
+              : 'bg-yellow-100 text-yellow-800'
         }`}>
           {session.status}
         </span>
