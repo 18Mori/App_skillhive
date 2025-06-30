@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -8,53 +8,20 @@ import Signup from './pages/Signup';
 import MentorDashboard from './pages/MentorDashboard';
 import MenteeDashboard from './pages/MenteeDashboard';
 import CommunityHub from './pages/CommunityHub';
+import FindMentor from './pages/FindMentor';
+import RequestSession from './pages/RequestSession';
+import MentorProfile from './pages/MentorProfile';
+import EditProfile from './pages/EditProfile';
+import ProtectedRoute from './components/ProtectedRoute';
+import { useAuth } from './context/AuthContext';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [message, setMessage] = useState({ text: '', type: '' });
-
-  useEffect(() => {
-    try {
-      const userJSON = localStorage.getItem('currentUser');
-      if (userJSON) {
-        setCurrentUser(JSON.parse(userJSON));
-      }
-    } catch (error) {
-      console.error("Failed to parse currentUser from localStorage", error);
-      localStorage.removeItem('currentUser'); // Clear corrupted data
-    }
-
-  }, []);
-
-  const handleLogin = (user) => {
-    setCurrentUser(user);
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    setMessage({ text: 'Login successful!', type: 'success' });
-  };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('currentUser');
-    setMessage({ text: 'Logged out successfully', type: 'success' });
-  };
-
-  const handleSignup = (newUser) => {
-    try {
-      const usersJSON = localStorage.getItem('users');
-      const users = usersJSON ? JSON.parse(usersJSON) : [];
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-      setMessage({ text: 'Account created successfully!', type: 'success' });
-    } catch (error) {
-      console.error("Failed to update users in localStorage", error);
-      setMessage({ text: 'An error occurred during signup.', type: 'error' });
-    }
-  };
+  const { currentUser, message } = useAuth();
 
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
-        <Header currentUser={currentUser} onLogout={handleLogout} />
+        <Header />
         {message.text && (
           <div className={`fixed top-4 right-4 p-4 rounded-md ${
             message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -64,11 +31,33 @@ function App() {
         )}
         
         <Routes>
-          <Route path="/" element={<Home currentUser={currentUser} />} />
-          <Route path="/login" element={currentUser ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />
-          <Route path="/signup" element={currentUser ? <Navigate to="/" /> : <Signup onSignup={handleSignup} />} />
-          <Route path="/mentor-dashboard" element={currentUser?.role === 'mentor' ? <MentorDashboard user={currentUser} /> : <Navigate to="/" />} />
-          <Route path="/mentee-dashboard" element={currentUser?.role === 'mentee' ? <MenteeDashboard user={currentUser} /> : <Navigate to="/" />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={currentUser ? <Navigate to="/" /> : <Login />} />
+          <Route path="/signup" element={currentUser ? <Navigate to="/" /> : <Signup />} />
+          <Route 
+            path="/mentor-dashboard" 
+            element={<ProtectedRoute role="mentor"><MentorDashboard /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/mentee-dashboard" 
+            element={<ProtectedRoute role="mentee"><MenteeDashboard /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/find-mentor" 
+            element={<ProtectedRoute role="mentee"><FindMentor /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/request-session/:mentorId" 
+            element={<ProtectedRoute role="mentee"><RequestSession /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/mentor/:mentorId" 
+            element={<ProtectedRoute role="mentee"><MentorProfile /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/edit-profile" 
+            element={<ProtectedRoute role="mentor"><EditProfile /></ProtectedRoute>} 
+          />
           <Route path="/community" element={<CommunityHub />} />
         </Routes>
       </div>

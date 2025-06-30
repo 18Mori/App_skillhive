@@ -1,17 +1,10 @@
 // src/components/SessionCard.jsx
 import React from 'react';
 import moment from 'moment';
+import { getUsers } from '../services/storageService';
 
 const SessionCard = ({ session, onUpdate, type }) => {
-  let users = [];
-  try {
-    const usersData = localStorage.getItem('users');
-    // Safely parse data, ensuring it defaults to an empty array if null/undefined
-    users = usersData ? JSON.parse(usersData) : [];
-  } catch (error) {
-    console.error("Failed to parse 'users' from localStorage:", error);
-    // In case of a parsing error, users will remain an empty array
-  }
+  const users = getUsers();
   
   const getParticipant = (id) => 
     users.find(user => user.id === id) || {};

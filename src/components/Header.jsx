@@ -1,50 +1,47 @@
 // src/components/Header.jsx
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const Header = ({ currentUser, onLogout }) => {
-  const navigate = useNavigate();
+const Header = () => {
+  const { currentUser, logout } = useAuth();
 
-  const handleLogout = () => {
-    onLogout();
-    navigate('/');
+  const getDashboardLink = () => {
+    if (!currentUser) return null;
+    return currentUser.role === 'mentor' ? '/mentor-dashboard' : '/mentee-dashboard';
   };
 
   return (
     <header className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-indigo-600">SkillHive</Link>
-        
-        <nav className="flex items-center space-x-6">
-          {currentUser ? (
+      <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
+        <Link to="/" className="text-xl font-bold text-indigo-600">MentorshipApp</Link>
+        <div className="flex items-center space-x-4">
+          <NavLink to="/" className={({ isActive }) => isActive ? "text-indigo-600" : "text-gray-600"}>Home</NavLink>
+          {currentUser && (
             <>
-              <Link to="/community" className="text-gray-600 hover:text-indigo-600">Community</Link>
-              {currentUser.role === 'mentor' && (
-                <Link to="/mentor-dashboard" className="text-gray-600 hover:text-indigo-600">Dashboard</Link>
-              )}
+              <NavLink to={getDashboardLink()} className={({ isActive }) => isActive ? "text-indigo-600" : "text-gray-600"}>Dashboard</NavLink>
               {currentUser.role === 'mentee' && (
-                <Link to="/mentee-dashboard" className="text-gray-600 hover:text-indigo-600">Dashboard</Link>
+                <NavLink to="/find-mentor" className={({ isActive }) => isActive ? "text-indigo-600" : "text-gray-600"}>Find a Mentor</NavLink>
               )}
-              <button 
-                onClick={handleLogout}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="text-gray-600 hover:text-indigo-600">Login</Link>
-              <Link 
-                to="/signup" 
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-              >
-                Sign Up
-              </Link>
+              <NavLink to="/community" className={({ isActive }) => isActive ? "text-indigo-600" : "text-gray-600"}>Community</NavLink>
+              <div className="flex items-center gap-3">
+                <button onClick={logout} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-gray-300">Logout</button>
+                <img 
+                  src={currentUser.avatar || 'https://via.placeholder.com/40'} 
+                  alt="User Avatar" 
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              </div>
             </>
           )}
-        </nav>
-      </div>
+          {!currentUser && (
+            <>
+              <NavLink to="/login" className="text-gray-600 hover:text-indigo-600">Login</NavLink>
+              <NavLink to="/signup" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Sign Up</NavLink>
+            </>
+          )}
+        </div>
+      </nav>
     </header>
   );
 };
