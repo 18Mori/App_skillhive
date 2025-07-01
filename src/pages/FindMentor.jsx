@@ -53,13 +53,13 @@ const FindMentor = () => {
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold">Find a Mentor</h1>
         <div className="flex items-center gap-2 w-full md:w-auto">
-          <input type="text" placeholder="Search by name or skill..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="px-4 py-2 border rounded-md w-full md:w-64" />
-          <select value={selectedSkill} onChange={(e) => setSelectedSkill(e.target.value)} className="px-4 py-2 border rounded-md bg-white">
+          <input type="text" placeholder="Search by name or skill..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="px-4 py-2 border rounded-md w-full md:w-64 mr-11" />
+          {/* <select value={selectedSkill} onChange={(e) => setSelectedSkill(e.target.value)} className="px-4 py-2 border rounded-md bg-white">
             <option value="">All Skills</option>
             {uniqueSkills.map(skill => (
               <option key={skill} value={skill}>{skill}</option>
             ))}
-          </select>
+          </select> */}
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
