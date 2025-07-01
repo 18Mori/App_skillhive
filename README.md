@@ -1,20 +1,30 @@
-# App_skillhive
+# Skillhive
 
 [![Deploy](https://vercel.com/button)](https://app-skillhive.vercel.app)
 
 ## Overview
 
-**App_skillhive** is a JavaScript-based application designed for deployment on Vercel.  
+**Skillhive** is a JavaScript-based application designed for deployment on Vercel.  
 This repository contains all the source code and resources needed to run the project.
+It's a dynamic mentorship platform connecting learners ("Mentees") with experts ("Mentors") for personalized skill development. 
 
-> **Note:** Please update this section with a detailed description of your project's goals and main features.
 
 ## Features
 
+- [ ] React
 - [ ] Modern JavaScript stack
 - [ ] Deploys to Vercel
-- [ ] Add more features here...
 
+## Problem Statement
+
+The modern workforce and lifelong learners face three critical challenges:  
+- Skill Gaps: Rapid technological advancements make it difficult for individuals to acquire relevant skills independently.  
+- Inefficient Mentorship: Traditional mentorship relies on personal networks, limiting access for underrepresented groups and remote learners.  
+- Fragmented Resources: Existing platforms focus on static content (e.g., pre-recorded courses) or generic forums, lacking personalized, interactive guidance.
+  # This results in: 
+- Stagnated career growth for professionals/students.  
+- Underutilized expertise from potential mentors.  
+- High dropout rates in self-directed learning due to isolation. 
 ## Getting Started
 
 ### Prerequisites
@@ -57,14 +67,8 @@ This project is set up for easy deployment to [Vercel](https://vercel.com/):
 
 Contributions are welcome! Please open issues or pull requests for suggestions and improvements.
 
-## License
-
-Specify your license here (e.g., MIT, Apache 2.0, etc.).
-
 ## Author
 
 - [18Mori](https://github.com/18Mori)
 
 ---
-
-_This README.md was generated as a template. Please fill in the missing details to better describe your project._
