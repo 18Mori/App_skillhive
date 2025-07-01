@@ -44,11 +44,11 @@ const MentorDashboard = () => {
         {sessions.length > 0 ? (
           <div className="space-y-4">
             {sessions.map(session => (
-              <SessionCard 
-                key={session.id} 
-                session={session} 
-                type="mentor" 
-                onUpdate={handleUpdateSession} 
+              <SessionCard
+                key={session.id}
+                session={session}
+                type="mentor"
+                onUpdate={handleUpdateSession}
               />
             ))}
           </div>

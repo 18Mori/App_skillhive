@@ -48,13 +48,13 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
-  const updateUserProfile = (updatedData) => {
+  const updateUserProfile = async (updatedData) => {
     if (!currentUser) return null;
 
     const updatedUser = storage.updateUser(currentUser.id, updatedData);
     if (updatedUser) {
       setCurrentUser(updatedUser); 
-      setMessage({ text: 'Profile updated successfully!', type: 'success' });
+      // Let the component set the message for more specific feedback
       return updatedUser;
     } else {
       setMessage({ text: 'Failed to update profile.', type: 'error' });
@@ -62,7 +62,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const value = { currentUser, login, logout, signup, message, updateUserProfile };
+  const deleteAccount = () => {
+    if (!currentUser) return false;
+
+    if (storage.deleteUser(currentUser.id)) {
+      setCurrentUser(null); // Log out the user
+      setMessage({ text: 'Your account has been successfully deleted.', type: 'success' });
+      return true;
+    } else {
+      setMessage({ text: 'Failed to delete account.', type: 'error' });
+      return false;
+    }
+  };
+
+  const value = { currentUser, login, logout, signup, message, setMessage, updateUserProfile, deleteAccount };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

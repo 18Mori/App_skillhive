@@ -56,7 +56,7 @@ function App() {
           />
           <Route 
             path="/edit-profile" 
-            element={<ProtectedRoute role="mentor"><EditProfile /></ProtectedRoute>} 
+            element={<ProtectedRoute><EditProfile /></ProtectedRoute>} 
           />
           <Route path="/community" element={<CommunityHub />} />
         </Routes>

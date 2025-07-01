@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <header className="bg-white shadow-md">
       <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold text-indigo-600">MentorshipApp</Link>
+        <Link to="/" className="text-xl font-bold text-indigo-600">Skillhive</Link>
         <div className="flex items-center space-x-4">
           <NavLink to="/" className={({ isActive }) => isActive ? "text-indigo-600" : "text-gray-600"}>Home</NavLink>
           {currentUser && (
@@ -22,7 +22,7 @@ const Header = () => {
               {currentUser.role === 'mentee' && (
                 <NavLink to="/find-mentor" className={({ isActive }) => isActive ? "text-indigo-600" : "text-gray-600"}>Find a Mentor</NavLink>
               )}
-              <NavLink to="/community" className={({ isActive }) => isActive ? "text-indigo-600" : "text-gray-600"}>Community</NavLink>
+
               <div className="flex items-center gap-3">
                 <button onClick={logout} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-gray-300">Logout</button>
                 <img 

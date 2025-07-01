@@ -1,61 +1,31 @@
+// src/components/SessionCard.jsx
 import React from 'react';
-import moment from 'moment';
-import { getUsers } from '../services/storageService';
 
-const SessionCard = ({ session, onUpdate, type }) => {
-  const users = getUsers();
-  
-  const getParticipant = (id) => 
-    users.find(user => user.id === id) || {};
-  
-  const mentor = getParticipant(session.mentorId);
-  const mentee = getParticipant(session.menteeId);
+const SessionCard = ({ session, type, onUpdate }) => {
+  const { topic, date, time, status } = session;
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 border-l-4 border-indigo-500">
-      <div className="flex justify-between">
+    <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-indigo-500">
+      <div className="flex justify-between items-start">
         <div>
-          <h3 className="font-semibold">{session.topic}</h3>
-          <p className="text-gray-600 text-sm">
-            {type === 'mentor' ? `With: ${mentee.name || 'Mentee'}` : `Mentor: ${mentor.name || 'Expert'}`}
-          </p>
+          <h3 className="text-lg font-bold">{topic}</h3>
+          <p className="text-sm text-gray-600">Date: {new Date(date).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-600">Time: {time}</p>
         </div>
-        <span className={`px-2 py-1 rounded-full text-xs ${
-          session.status === 'confirmed' 
-            ? 'bg-green-100 text-green-800' 
-            : session.status === 'completed'
-              ? 'bg-blue-100 text-blue-800'
-              : 'bg-yellow-100 text-yellow-800'
+        <span className={`capitalize px-3 py-1 text-xs font-semibold rounded-full ${
+          status === 'confirmed' ? 'bg-green-100 text-green-800' :
+          status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+          'bg-red-100 text-red-800'
         }`}>
-          {session.status}
+          {status}
         </span>
       </div>
-      
-      <div className="mt-4 flex justify-between items-center">
-        <div>
-          <p className="text-sm text-gray-600">
-            {moment(session.date).format('MMM Do, YYYY')} | {session.time}
-          </p>
-          <p className="text-sm">Duration: {session.duration} mins</p>
+      {type === 'mentor' && status === 'pending' && (
+        <div className="mt-4 flex gap-2">
+          <button onClick={() => onUpdate(session.id, 'confirmed')} className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600">Confirm</button>
+          <button onClick={() => onUpdate(session.id, 'declined')} className="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600">Decline</button>
         </div>
-        
-        {onUpdate && session.status === 'pending' && (
-          <div className="space-x-2">
-            <button 
-              onClick={() => onUpdate(session.id, 'confirmed')}
-              className="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700"
-            >
-              Approve
-            </button>
-            <button 
-              onClick={() => onUpdate(session.id, 'rejected')}
-              className="bg-red-600 text-white px-3 py-1 rounded-md text-sm hover:bg-red-700"
-            >
-              Reject
-            </button>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };
