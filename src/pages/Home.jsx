@@ -10,7 +10,6 @@ const Home = () => {
   useEffect(() => {
     const allUsers = getUsers();
     const mentors = allUsers.filter(user => user.role === 'mentor');
-    // Feature up to 3 mentors
     setFeaturedMentors(mentors.slice(0, 3));
   }, []);
 
